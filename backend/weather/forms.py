@@ -1,9 +1,9 @@
-from rest_framework import serializers
+from django import forms
 
 from .models import Locations
 
 
-class LocationsSerializer(serializers.ModelSerializer):
+class LocationsForm(forms.ModelForm):
     class Meta:
         model = Locations
         fields = [

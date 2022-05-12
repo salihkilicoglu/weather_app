@@ -1,14 +1,16 @@
-from django.http import JsonResponse
-from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 from weather.models import Locations
+from weather.serializers import LocationsSerializer
 
 
+@api_view(["GET"])
 def api_home(request, *args, **kwargs):
-    model_data = Locations.objects.all().order_by("?").first()
+    """Django rest framework apı view"""
+    instance = Locations.objects.all().order_by("?").first()
     data = {}
-    if model_data:
-        data['id'] = model_data.id
-        data['city'] = model_data.city
+    if instance:
+        data = LocationsSerializer(instance).data
 
-    return JsonResponse(data)
+    return Response(data)
