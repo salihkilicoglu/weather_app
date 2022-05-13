@@ -9,3 +9,6 @@ class LocationsForm(forms.ModelForm):
         fields = [
             'city',
         ]
+
+
+
