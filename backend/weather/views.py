@@ -1,11 +1,21 @@
-from urllib import request
+from django.views import generic
 from rest_framework import generics
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.shortcuts import render
 
 from api.mixins import IsAdminUserMixin
 from .models import Locations
 from .serializers import LocationsSerializer, UserSerializer
+from .forms import LocationsForm
+
+
+def homeView(request):
+    locations = Locations.objects.all()
+    context = {
+        "locations":locations,
+    }
+    return render(request, 'home.html', context)
 
 
 # Users

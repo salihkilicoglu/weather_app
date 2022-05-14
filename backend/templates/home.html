@@ -6,9 +6,21 @@
 {% block content %}
 {% if user.is_authenticated %}
   Hi {{ user.username }}!
+
+  <label for="cars">Choose a city:</label>
+
+  <select name="Locations" id="Locations">
+    {% for location in locations %}
+    <option value="{{location}}">{{location}}</option>
+    {% endfor %}
+  </select>
+
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">Log In</a>
+
+
+
 {% endif %}
 {% endblock %}
