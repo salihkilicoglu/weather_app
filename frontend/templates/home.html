@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  {% csrf_token %}
+  <select id="deneme">
+
+  </select>
+  <input id="salo" type="text"/>
+  <button id="malo">Submit</button>
+</body>
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous">
+</script>
+<script>
+  $(document).on('load', $.getJSON( "api/weather/locations/", function(data) {
+if(data){
+  $('#deneme').append(data.map(asd => `<option>${asd.city}</option>`))
+} else{
+  $('document').body.append('asdasd');
+}
+})) 
+  
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  $(document).ready(function(){
+
+
+  
+  $('#malo').on('click', function(e){
+    var deneme = $('#salo').val()
+    e.preventDefault()
+
+  $.ajax({
+    type: 'POST',
+    url: "api/weather/locations/create/",
+    data: JSON.stringify({city: deneme}),
+    headers: {
+      'X-CSRFToken': csrftoken,
+      "Accept": "application/json"},
+    error: function(e) {
+      console.log(e);
+    },
+    dataType: "json",
+    contentType: "application/json"
+  });
+  })
+
+  $("#deneme").on("change", function(){
+    var selectedVal = $("#deneme option:selected").val();
+    $.getJSON(`https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q=${selectedVal}`, function(data) {
+      console.log(data);
+    })
+  })
+
+})
+
+
+
+
+</script>
+</html>

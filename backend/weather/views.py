@@ -15,7 +15,7 @@ def homeView(request):
     context = {
         "locations":locations,
     }
-    return render(request, 'home.html', context)
+    return render(request, 'home.html')
 
 
 # Users
@@ -84,18 +84,14 @@ user_destroy_view = UserDestroyAPIView.as_view()
 
 
 # Locations
-class LocationsListAPIView(
-    LoginRequiredMixin,
-    generics.ListAPIView):
+class LocationsListAPIView(generics.ListAPIView):
     queryset = Locations.objects.all()
     serializer_class = LocationsSerializer
 
 locations_list_view = LocationsListAPIView.as_view()
 
 
-class LocationsCreateAPIView(
-    LoginRequiredMixin,
-    IsAdminUserMixin,
+class LocationsCreateAPIView(IsAdminUserMixin,
     generics.CreateAPIView):
     queryset = Locations.objects.all()
     serializer_class = LocationsSerializer
