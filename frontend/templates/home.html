@@ -12,8 +12,7 @@
   <p><a href="{% url 'logout' %}">Log Out</a></p>
   {% endif %}
   {% csrf_token %}
-  See the weather in:
-  <select id="locations"></select>
+  See the weather in:<select id="locations"></select>
   <br><br>
   <input id="text_input" type="text"/>
   <button id="post_button">Add location</button>
@@ -24,6 +23,13 @@
   <br><br>
   <select id="locations_delete"></select>
   <button id="delete_button">Delete location</button>
+  <br><br><br><br>
+  See the user details of the:<select id="users"></select>
+  <br><br>
+  Username:<input id="user_input_post_username" type="text"/>
+  Password:<input id="user_input_post_password" type="text"/>
+  Admin?:<select id="user_input_post_admin"><option>true</option><option>false</option></select>
+  <button id="user_post_button">Add user</button>
 </body>
 <script
 src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -54,7 +60,15 @@ if(data){
   $('document').body.append('selectoptions');
 }
 }))
-  
+
+$(document).on('load', $.getJSON( "api/weather/users/", function(data) {
+if(data){
+  $('#users').append(data.map(selectbox => `<option>${selectbox.username}</option>`))
+} else{
+  $('document').body.append('selectoptions');
+}
+}))
+
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
   $(document).ready(function(){
 
@@ -89,7 +103,6 @@ if(data){
   $.ajax({
     type: 'PUT',
     url: `api/weather/locations/${value_selected_update}/update/`,
-    // burda kaldım
     data: JSON.stringify({city: value_inbox_update}),
     headers: {
       'X-CSRFToken': csrftoken,
@@ -119,10 +132,40 @@ if(data){
   });
   })
 
+  // add user
+  $('#user_post_button').on('click', function(e){
+    var value_username = $('#user_input_post_username').val()
+    var value_password = $('#user_input_post_password').val()
+    var value_admin = $('#user_input_post_admin').val()
+    e.preventDefault()
+
+  $.ajax({
+    type: 'POST',
+    url: "api/weather/users/create/",
+    data: JSON.stringify({username: value_username, password: value_password, is_staff: value_admin}),
+    headers: {
+      'X-CSRFToken': csrftoken,
+      "Accept": "application/json"},
+    error: function(err) {
+      console.log(err); // console'a değil ekrana yazacak
+    },
+    dataType: "json",
+    contentType: "application/json"
+  });
+  })
+
   // option select on change show weather
   $("#locations").on("change", function(){
     var selectedVal = $("#locations option:selected").val();
     $.getJSON(`https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q=${selectedVal}`, function(data) {
+      console.log(data); // console'a değil ekrana yazacak
+    })
+  })
+
+  // option select on change show user details
+  $("#users").on("change", function(){
+    var selectedUser = $("#users option:selected").val();
+    $.getJSON(`api/weather/users/${selectedUser}`, function(data) {
       console.log(data); // console'a değil ekrana yazacak
     })
   })

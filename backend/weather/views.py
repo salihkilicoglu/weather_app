@@ -41,6 +41,7 @@ class UserDetailAPIView(
     generics.RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    lookup_field = 'username'
 
 user_detail_view = UserDetailAPIView.as_view()
 
