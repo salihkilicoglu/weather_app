@@ -1,4 +1,4 @@
-from django.views import generic
+from django.views import View
 from rest_framework import generics
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -7,16 +7,12 @@ from django.shortcuts import render
 from api.mixins import IsAdminUserMixin
 from .models import Locations
 from .serializers import LocationsSerializer, UserSerializer
-from .forms import LocationsForm
 
+class HomeView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'home.html')
 
-def homeView(request):
-    locations = Locations.objects.all()
-    context = {
-        "locations":locations,
-    }
-    return render(request, 'home.html')
-
+home_view = HomeView.as_view()
 
 # Users
 class UserListAPIView(
@@ -84,14 +80,18 @@ user_destroy_view = UserDestroyAPIView.as_view()
 
 
 # Locations
-class LocationsListAPIView(generics.ListAPIView):
+class LocationsListAPIView(
+    LoginRequiredMixin,
+    generics.ListAPIView):
     queryset = Locations.objects.all()
     serializer_class = LocationsSerializer
 
 locations_list_view = LocationsListAPIView.as_view()
 
 
-class LocationsCreateAPIView(IsAdminUserMixin,
+class LocationsCreateAPIView(
+    LoginRequiredMixin,
+    IsAdminUserMixin,
     generics.CreateAPIView):
     queryset = Locations.objects.all()
     serializer_class = LocationsSerializer
@@ -115,7 +115,7 @@ class LocationsUpdateAPIView(
     generics.UpdateAPIView):
     queryset = Locations.objects.all()
     serializer_class = LocationsSerializer
-    lookup_field = 'pk'
+    lookup_field = 'city'
 
 locations_update_view = LocationsUpdateAPIView.as_view()
 
@@ -126,6 +126,6 @@ class LocationsDestroyAPIView(
     generics.DestroyAPIView):
     queryset = Locations.objects.all()
     serializer_class = LocationsSerializer
-    lookup_field = 'pk'
+    lookup_field = 'city'
 
 locations_destroy_view = LocationsDestroyAPIView.as_view()

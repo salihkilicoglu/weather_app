@@ -4,15 +4,26 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>WeatherApp</title>
 </head>
 <body>
+  {% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  <p><a href="{% url 'logout' %}">Log Out</a></p>
+  {% endif %}
   {% csrf_token %}
-  <select id="deneme">
-
-  </select>
-  <input id="salo" type="text"/>
-  <button id="malo">Submit</button>
+  See the weather in:
+  <select id="locations"></select>
+  <br><br>
+  <input id="text_input" type="text"/>
+  <button id="post_button">Add location</button>
+  <br><br>
+  <select id="locations_update"></select>
+  <input id="text_input_update" type="text"/>
+  <button id="update_button">Update location</button>
+  <br><br>
+  <select id="locations_delete"></select>
+  <button id="delete_button">Delete location</button>
 </body>
 <script
 src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -22,40 +33,97 @@ crossorigin="anonymous">
 <script>
   $(document).on('load', $.getJSON( "api/weather/locations/", function(data) {
 if(data){
-  $('#deneme').append(data.map(asd => `<option>${asd.city}</option>`))
+  $('#locations').append(data.map(selectbox => `<option>${selectbox.city}</option>`))
 } else{
-  $('document').body.append('asdasd');
+  $('document').body.append('selectoptions');
 }
-})) 
+}))
+
+  $(document).on('load', $.getJSON( "api/weather/locations/", function(data) {
+if(data){
+  $('#locations_update').append(data.map(selectbox => `<option>${selectbox.city}</option>`))
+} else{
+  $('document').body.append('selectoptions');
+}
+}))
+
+$(document).on('load', $.getJSON( "api/weather/locations/", function(data) {
+if(data){
+  $('#locations_delete').append(data.map(selectbox => `<option>${selectbox.city}</option>`))
+} else{
+  $('document').body.append('selectoptions');
+}
+}))
   
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
   $(document).ready(function(){
 
 
-  
-  $('#malo').on('click', function(e){
-    var deneme = $('#salo').val()
+  // add location
+  $('#post_button').on('click', function(e){
+    var value_inbox = $('#text_input').val()
     e.preventDefault()
 
   $.ajax({
     type: 'POST',
     url: "api/weather/locations/create/",
-    data: JSON.stringify({city: deneme}),
+    data: JSON.stringify({city: value_inbox}),
     headers: {
       'X-CSRFToken': csrftoken,
       "Accept": "application/json"},
-    error: function(e) {
-      console.log(e);
+    error: function(err) {
+      console.log(err); // console'a değil ekrana yazacak
     },
     dataType: "json",
     contentType: "application/json"
   });
   })
 
-  $("#deneme").on("change", function(){
-    var selectedVal = $("#deneme option:selected").val();
+  // update location
+  $('#update_button').on('click', function(e){
+    var value_selected_update = $('#locations_update').val()
+    var value_inbox_update = $('#text_input_update').val()
+    e.preventDefault()
+
+
+  $.ajax({
+    type: 'PUT',
+    url: `api/weather/locations/${value_selected_update}/update/`,
+    // burda kaldım
+    data: JSON.stringify({city: value_inbox_update}),
+    headers: {
+      'X-CSRFToken': csrftoken,
+      "Accept": "application/json"},
+    error: function(err) {
+      console.log(err); // console'a değil ekrana yazacak
+    },
+    dataType: "json",
+    contentType: "application/json"
+  });
+  })
+
+  // delete location
+  $('#delete_button').on('click', function(e){
+    var value_selected_delete = $('#locations_delete').val()
+    e.preventDefault()
+
+  $.ajax({
+    type: 'DELETE',
+    url: `api/weather/locations/${value_selected_delete}/delete/`,
+    headers: {
+      'X-CSRFToken': csrftoken,
+    },
+    error: function(err) {
+      console.log(err); // console'a değil ekrana yazacak
+    },
+  });
+  })
+
+  // option select on change show weather
+  $("#locations").on("change", function(){
+    var selectedVal = $("#locations option:selected").val();
     $.getJSON(`https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q=${selectedVal}`, function(data) {
-      console.log(data);
+      console.log(data); // console'a değil ekrana yazacak
     })
   })
 
