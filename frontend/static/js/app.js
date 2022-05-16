@@ -171,12 +171,22 @@ $(document).ready(function(){
   });
   })
 
-  // option select on change show weather
+  // weather_button on click show weather
   $("#weather_button").on("click", function(){
+    var startTime = performance.now();
     var selectedVal = $("#locations option:selected").val();
     $.getJSON(`https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q=${selectedVal}`, function(data) {
+      if(data){
       document.getElementById("weather_json").textContent = JSON.stringify(data, undefined, 2);
+      var query_success = true;
+      }
+      else{
+      var query_success = false;
+      }
     })
+    var endTime = performance.now();
+    var query_time = endTime - startTime;
+
   })
 
   // option select on change show user details

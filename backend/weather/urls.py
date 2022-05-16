@@ -14,4 +14,6 @@ urlpatterns = [
     path('users/<str:username>/update/', views.user_update_view),
     path('users/<str:username>/delete/', views.user_destroy_view),
     path('users/<str:username>/', views.user_detail_view),
+    path('logs/', views.log_list_view),
+    path('logs/create/', views.log_create_view),
 ]

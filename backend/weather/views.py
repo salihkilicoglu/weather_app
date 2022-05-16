@@ -6,14 +6,33 @@ from rest_framework import generics
 from rest_framework.exceptions import APIException
 
 from api.mixins import IsAdminUserMixin
-from .models import Locations
-from .serializers import LocationsSerializer, UserSerializer
+from .models import Locations, Log
+from .serializers import LocationsSerializer, LogSerializer, UserSerializer
 
 class HomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, 'home.html')
 
 home_view = HomeView.as_view()
+
+
+class LogListAPIView(
+    LoginRequiredMixin,
+    generics.ListAPIView):
+    serializer_class = LogSerializer
+    queryset = Log.objects.all()
+
+log_list_view = LogListAPIView.as_view()
+
+
+class LogCreateAPIView(
+    LoginRequiredMixin,
+    generics.CreateAPIView):
+    serializer_class = LogSerializer
+    queryset = Log.objects.all()
+
+log_create_view = LogCreateAPIView.as_view()
+
 
 # Users
 class UserListAPIView(

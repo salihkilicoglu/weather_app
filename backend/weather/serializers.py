@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Locations
+from .models import Locations, Log
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -38,4 +38,19 @@ class LocationsSerializer(serializers.ModelSerializer):
         model = Locations
         fields = [
             'city',
+        ]
+
+
+class LogSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Log
+        fields = [
+            'user_id',
+            'query_date',
+            'location_id',
+            'ip_address',
+            'query_result',
+            'query_time',
+            'query_success',
         ]
