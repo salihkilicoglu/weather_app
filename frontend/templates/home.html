@@ -30,6 +30,12 @@
   Password:<input id="user_input_post_password" type="text"/>
   Admin?:<select id="user_input_post_admin"><option>true</option><option>false</option></select>
   <button id="user_post_button">Add user</button>
+  <br><br>
+  <select id="users_update"></select>
+  Username:<input id="user_input_update_username" type="text"/>
+  Password:<input id="user_input_update_password" type="text"/>
+  Admin?:<select id="user_input_update_admin"><option>true</option><option>false</option></select>
+  <button id="user_update_button">Update user</button>
 </body>
 <script
 src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -64,6 +70,14 @@ if(data){
 $(document).on('load', $.getJSON( "api/weather/users/", function(data) {
 if(data){
   $('#users').append(data.map(selectbox => `<option>${selectbox.username}</option>`))
+} else{
+  $('document').body.append('selectoptions');
+}
+}))
+
+$(document).on('load', $.getJSON( "api/weather/users/", function(data) {
+if(data){
+  $('#users_update').append(data.map(selectbox => `<option>${selectbox.username}</option>`))
 } else{
   $('document').body.append('selectoptions');
 }
@@ -143,6 +157,29 @@ if(data){
     type: 'POST',
     url: "api/weather/users/create/",
     data: JSON.stringify({username: value_username, password: value_password, is_staff: value_admin}),
+    headers: {
+      'X-CSRFToken': csrftoken,
+      "Accept": "application/json"},
+    error: function(err) {
+      console.log(err); // console'a değil ekrana yazacak
+    },
+    dataType: "json",
+    contentType: "application/json"
+  });
+  })
+
+  // update user
+  $('#user_update_button').on('click', function(e){
+    var value_selected_update = $('#users_update').val()
+    var value_username_upd = $('#user_input_update_username').val()
+    var value_password_upd = $('#user_input_update_password').val()
+    var value_admin_upd = $('#user_input_update_admin').val()
+    e.preventDefault()
+
+  $.ajax({
+    type: 'PATCH',
+    url: `api/weather/users/${value_selected_update}/update/`,
+    data: JSON.stringify({username: value_username_upd, password: value_password_upd, is_staff: value_admin_upd}),
     headers: {
       'X-CSRFToken': csrftoken,
       "Accept": "application/json"},

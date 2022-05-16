@@ -52,7 +52,7 @@ class UserUpdateAPIView(
     generics.UpdateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    lookup_field = 'pk'
+    lookup_field = 'username'
 
     def perform_update(self, serializer):
         id = self.request.path[19:20]
@@ -69,7 +69,7 @@ class UserDestroyAPIView(
     generics.DestroyAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    lookup_field = 'pk'
+    lookup_field = 'username'
 
     def perform_destroy(self, instance):
         id = self.request.path[19:20]

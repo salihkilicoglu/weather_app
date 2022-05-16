@@ -13,7 +13,7 @@ urlpatterns = [
     path('locations/<int:pk>/', views.locations_detail_view, name='locations-detail'),
     path('users/', views.user_list_view),
     path('users/create/', views.user_create_view),
-    path('users/<int:pk>/update/', views.user_update_view),
-    path('users/<int:pk>/delete/', views.user_destroy_view),
+    path('users/<str:username>/update/', views.user_update_view),
+    path('users/<str:username>/delete/', views.user_destroy_view),
     path('users/<str:username>/', views.user_detail_view),
 ]
