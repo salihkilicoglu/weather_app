@@ -12,9 +12,10 @@
   Hi {{ user.username }}!
   <p><a href="{% url 'logout' %}">Log Out</a></p>
   See the weather in:<select id="locations"></select>
+  <button id="weather_button">Submit</button>
+  <pre id="weather_json"></pre>
   {% endif %}
   {% if user.is_staff %}
-  <br><br>
   <input id="text_input" type="text"/>
   <button id="post_button">Add location</button>
   <br><br>
@@ -26,7 +27,8 @@
   <button id="delete_button">Delete location</button>
   <br><br><br><br>
   See the user details of the:<select id="users"></select>
-  <br><br>
+  <button id="user_button">Submit</button>
+  <pre id="user_json"></pre>
   Username:<input id="user_input_post_username" type="text"/>
   Password:<input id="user_input_post_password" type="text"/>
   Admin?:<select id="user_input_post_admin"><option>true</option><option>false</option></select>
