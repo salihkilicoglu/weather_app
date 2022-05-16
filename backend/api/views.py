@@ -7,7 +7,6 @@ from weather.serializers import LocationsSerializer
 
 @api_view(["GET"])
 def api_home(request, *args, **kwargs):
-    """Django rest framework apı view"""
     instance = Locations.objects.all().order_by("?").first()
     data = {}
     if instance:
