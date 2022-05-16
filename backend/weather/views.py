@@ -1,8 +1,9 @@
 from django.views import View
-from rest_framework import generics
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render
+from rest_framework import generics
+from rest_framework.exceptions import APIException
 
 from api.mixins import IsAdminUserMixin
 from .models import Locations
@@ -55,9 +56,9 @@ class UserUpdateAPIView(
     lookup_field = 'username'
 
     def perform_update(self, serializer):
-        id = self.request.path[19:20]
-        if id == '1':
-            raise Exception("You can not update/delete root user")
+        username = self.get_object().username
+        if username == 'root':
+            raise APIException('You can not update/delete root user')
         serializer.save()
 
 user_update_view = UserUpdateAPIView.as_view()
@@ -72,9 +73,9 @@ class UserDestroyAPIView(
     lookup_field = 'username'
 
     def perform_destroy(self, instance):
-        id = self.request.path[19:20]
-        if id == '1':
-            raise Exception("You can not update/delete root user")
+        username = instance.username
+        if username == 'root':
+            raise APIException('You can not update/delete root user')
         super().perform_destroy(instance)
 
 user_destroy_view = UserDestroyAPIView.as_view()
@@ -98,16 +99,6 @@ class LocationsCreateAPIView(
     serializer_class = LocationsSerializer
 
 locations_create_view = LocationsCreateAPIView.as_view()
-
-
-class LocationsDetailAPIView(
-    LoginRequiredMixin,
-    IsAdminUserMixin,
-    generics.RetrieveAPIView):
-    queryset = Locations.objects.all()
-    serializer_class = LocationsSerializer
-
-locations_detail_view = LocationsDetailAPIView.as_view()
 
 
 class LocationsUpdateAPIView(

@@ -36,6 +36,9 @@
   Password:<input id="user_input_update_password" type="text"/>
   Admin?:<select id="user_input_update_admin"><option>true</option><option>false</option></select>
   <button id="user_update_button">Update user</button>
+  <br><br>
+  <select id="users_delete"></select>
+  <button id="user_delete_button">Delete user</button>
 </body>
 <script
 src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -78,6 +81,14 @@ if(data){
 $(document).on('load', $.getJSON( "api/weather/users/", function(data) {
 if(data){
   $('#users_update').append(data.map(selectbox => `<option>${selectbox.username}</option>`))
+} else{
+  $('document').body.append('selectoptions');
+}
+}))
+
+$(document).on('load', $.getJSON( "api/weather/users/", function(data) {
+if(data){
+  $('#users_delete').append(data.map(selectbox => `<option>${selectbox.username}</option>`))
 } else{
   $('document').body.append('selectoptions');
 }
@@ -170,7 +181,7 @@ if(data){
 
   // update user
   $('#user_update_button').on('click', function(e){
-    var value_selected_update = $('#users_update').val()
+    var value_selected_update_user = $('#users_update').val()
     var value_username_upd = $('#user_input_update_username').val()
     var value_password_upd = $('#user_input_update_password').val()
     var value_admin_upd = $('#user_input_update_admin').val()
@@ -178,7 +189,7 @@ if(data){
 
   $.ajax({
     type: 'PATCH',
-    url: `api/weather/users/${value_selected_update}/update/`,
+    url: `api/weather/users/${value_selected_update_user}/update/`,
     data: JSON.stringify({username: value_username_upd, password: value_password_upd, is_staff: value_admin_upd}),
     headers: {
       'X-CSRFToken': csrftoken,
@@ -188,6 +199,23 @@ if(data){
     },
     dataType: "json",
     contentType: "application/json"
+  });
+  })
+
+  // delete user
+  $('#user_delete_button').on('click', function(e){
+    var value_selected_delete_user = $('#users_delete').val()
+    e.preventDefault()
+
+  $.ajax({
+    type: 'DELETE',
+    url: `api/weather/users/${value_selected_delete_user}/delete/`,
+    headers: {
+      'X-CSRFToken': csrftoken,
+    },
+    error: function(err) {
+      console.log(err); // console'a değil ekrana yazacak
+    },
   });
   })
 
