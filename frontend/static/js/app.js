@@ -174,19 +174,33 @@ $(document).ready(function(){
   // weather_button on click show weather
   $("#weather_button").on("click", function(){
     var startTime = performance.now();
-    var selectedVal = $("#locations option:selected").val();
-    $.getJSON(`https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q=${selectedVal}`, function(data) {
+    window.selectedVal = $("#locations option:selected").val();
+    $.getJSON(`https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q=${window.selectedVal}`, function(data) {
       if(data){
       document.getElementById("weather_json").textContent = JSON.stringify(data, undefined, 2);
       var query_success = true;
+      var myjson = data;
+      console.log(window.selectedVal)
+      var endTime = performance.now();
+      var query_time = endTime - startTime;
       }
       else{
       var query_success = false;
       }
+      $.ajax({
+        type: 'POST',
+        url: "api/weather/logs/create/",
+        data: JSON.stringify({location_id: window.selectedVal, query_result: myjson, query_time: query_time, query_success: query_success}),
+        headers: {
+          'X-CSRFToken': csrftoken,
+          "Accept": "application/json"},
+        error: function(err) {
+          console.log(err); // console'a değil ekrana yazacak
+        },
+        dataType: "json",
+        contentType: "application/json"
+      });
     })
-    var endTime = performance.now();
-    var query_time = endTime - startTime;
-
   })
 
   // option select on change show user details

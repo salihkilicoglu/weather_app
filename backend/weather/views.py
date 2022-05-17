@@ -31,6 +31,20 @@ class LogCreateAPIView(
     serializer_class = LogSerializer
     queryset = Log.objects.all()
 
+    def perform_create(self, serializer):
+        def get_client_ip(request):
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+            if x_forwarded_for:
+                ip = x_forwarded_for.split(',')[0]
+            else:
+                ip = request.META.get('REMOTE_ADDR')
+            return ip
+
+        ip_address = serializer.validated_data.get('ip_address') or None
+        if ip_address is None:
+            ip_address = get_client_ip(self.request)
+        serializer.save(user_id=self.request.user, ip_address=ip_address)
+
 log_create_view = LogCreateAPIView.as_view()
 
 
