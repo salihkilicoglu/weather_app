@@ -242,8 +242,8 @@ $(document).ready(function(){
 
   // user_log_post_button on click show logs
   $("#user_log_post_button").on("click", function(){
-    window.selectedValLog = $("#users_log option:selected").val();
-    $.getJSON(`api/weather/logs/?user_id=${window.selectedValLog}`, function(data) {
+    var selectedValLog = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?user_id=${selectedValLog}`, function(data) {
       if(data){
       document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
       }
@@ -284,8 +284,8 @@ $(document).ready(function(){
 
   // user_log_5_minutes on click show logs
   $("#user_log_5_minutes").on("click", function(){
-    var selectedValLog3 = $("#users_log option:selected").val();
-    $.getJSON(`api/weather/logs/?query_date=5&user_id=${selectedValLog3}`, function(data) {
+    var selectedValLog4 = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?query_date=5&user_id=${selectedValLog4}`, function(data) {
       if(data){
       document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
       }
@@ -298,9 +298,9 @@ $(document).ready(function(){
 
   // locations_user_log_button on click show logs
   $("#locations_user_log_button").on("click", function(){
-    var selectedValLog4 = $("#locations_users_log option:selected").val();
-    var selectedValLog5 = $("#users_log option:selected").val();
-    $.getJSON(`api/weather/logs/?location_id=${selectedValLog4}&user_id=${selectedValLog5}`, function(data) {
+    var selectedValLog5 = $("#locations_users_log option:selected").val();
+    var selectedValLog6 = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?location_id=${selectedValLog5}&user_id=${selectedValLog6}`, function(data) {
       if(data){
       document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
       }
@@ -313,9 +313,9 @@ $(document).ready(function(){
 
   // locations_user_log_button on click show logs +++
   $("#locations_user_log_success_button").on("click", function(){
-    var selectedValLog6 = $("#success_user_log option:selected").val();
-    var selectedValLog7 = $("#users_log option:selected").val();
-    $.getJSON(`api/weather/logs/?query_success=${selectedValLog6}&user_id=${selectedValLog7}`, function(data) {
+    var selectedValLog7 = $("#success_user_log option:selected").val();
+    var selectedValLog8 = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?query_success=${selectedValLog7}&user_id=${selectedValLog8}`, function(data) {
       if(data){
       document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
       }
