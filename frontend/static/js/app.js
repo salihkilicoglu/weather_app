@@ -46,6 +46,14 @@ if(data){
 }
 }))
 
+$(document).on('load', $.getJSON( "api/weather/users/", function(data) {
+  if(data){
+    $('#users_log').append(data.map(selectbox => `<option>${selectbox.id}</option>`))
+  } else{
+    $('document').body.append('selectoptions');
+  }
+  }))
+
 
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 $(document).ready(function(){
@@ -176,16 +184,12 @@ $(document).ready(function(){
     var startTime = performance.now();
     window.selectedVal = $("#locations option:selected").val();
     $.getJSON(`https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q=${window.selectedVal}`, function(data) {
-      if(data){
+      var myjson = data;
       document.getElementById("weather_json").textContent = JSON.stringify(data, undefined, 2);
       var query_success = true;
-      var myjson = data;
       var endTime = performance.now();
       var query_time = endTime - startTime;
-      }
-      else{
-      var query_success = false;
-      }
+      
       $.ajax({
         type: 'POST',
         url: "api/weather/logs/create/",
@@ -198,16 +202,48 @@ $(document).ready(function(){
         },
         dataType: "json",
         contentType: "application/json"
-      });
+      })
+    })
+    .fail(function() {
+      var query_success = false;
+      var query_time = 0;
+      var myjson = null;
+      $.ajax({
+        type: 'POST',
+        url: "api/weather/logs/create/",
+        data: JSON.stringify({location_id: window.selectedVal, query_result: myjson, query_time: query_time, query_success: query_success}),
+        headers: {
+          'X-CSRFToken': csrftoken,
+          "Accept": "application/json"},
+        error: function(err) {
+          console.log(err); // console'a değil ekrana yazacak
+        },
+        dataType: "json",
+        contentType: "application/json"
+      })
     })
   })
 
-  // option select on change show user details
+  // option select on click show user details
   $("#user_button").on("click", function(){
     var selectedUser = $("#users option:selected").val();
     $.getJSON(`api/weather/users/${selectedUser}`, function(data) {
       document.getElementById("user_json").textContent = JSON.stringify(data, undefined, 2);
     })
   })
+
+    // weather_button on click show weather
+    $("#user_log_post_button").on("click", function(){
+      window.selectedValLog = $("#users_log option:selected").val();
+      $.getJSON(`api/weather/logs/?user_id=${window.selectedValLog}`, function(data) {
+        if(data){
+        document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+        }
+        else{
+        return false
+        }
+
+      })
+    })
 
 })

@@ -14,6 +14,6 @@ class Log(models.Model):
     query_date = models.DateTimeField(default=datetime.now)
     location_id = models.ForeignKey(Locations, to_field='city',null=True, on_delete=models.SET_NULL)
     ip_address = models.GenericIPAddressField(blank=True, null=True)
-    query_result = models.JSONField()
+    query_result = models.JSONField(null=True)
     query_time = models.FloatField()
     query_success = models.BooleanField(default=False)

@@ -77,7 +77,6 @@ log_create_view = LogCreateAPIView.as_view()
 # Users
 class UserListAPIView(
     LoginRequiredMixin,
-    IsAdminUserMixin,
     generics.ListAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
