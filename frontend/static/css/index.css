@@ -1,0 +1,81 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 50px 60px;
+}
+
+button{
+    outline: 0;
+    border: 1px solid transparent;
+    padding: 7px 15px;
+    background-color: #6ad3d3;
+    color: #ffffff;
+    cursor: pointer;
+    text-transform: capitalize;
+    transition: .4s all ease;
+    margin-left: 20px;
+}
+
+button:hover{
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    transition: .4s all ease;
+}
+
+select{
+    padding: 4px 12px;
+    cursor: pointer;
+    outline: 0;
+    text-transform: capitalize;
+}
+
+input{
+    padding: 4px 12px;
+    cursor: pointer;
+    outline: 0;
+}
+
+label{
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.pree{
+    background-color: #e3e3e3;
+    color: #000000;
+    display: none;
+    padding:30px;
+    margin-block: 10px ;
+    border-radius: 12px;
+}
+
+.weather-table{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    margin-block: 20px;
+    gap: 10px;
+    border: 1px solid #c3c3c3;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.weather-table.big{
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #c3c3c3;
+}
+
+.labels{
+    font-weight: bold;
+    font-size: 15px;
+    width: 150px;
+}
