@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./../static/css/index.css">
   <title>WeatherApp</title>
 </head>
 <body>
@@ -11,51 +12,94 @@
   {% if user.is_authenticated %}
   Hi {{ user.username }}!
   <p><a href="{% url 'logout' %}">Log Out</a></p>
-  See the weather in:<select id="locations"></select>
-  <button id="weather_button">Submit</button>
-  <pre id="weather_json"></pre>
+  <p style="font-weight: bold; margin-bottom: 20px;" >See the weather in:</p>
+  <div class="weather-table">
+    <select id="locations"></select>
+    <button id="weather_button">Submit</button>
+  </div>
+  <pre class="pree" id="weather_json"></pre>
+  <br><br>
   {% endif %}
   {% if user.is_staff %}
-  <input id="text_input" type="text"/>
-  <button id="post_button">Add location</button>
+  <div class="weather-table">
+    <input id="text_input" type="text"/>
+    <button id="post_button">Add location</button>
+  </div>
+  <div id="first-divison" class="weather-table">
+    <select id="locations_update"></select>
+    <input id="text_input_update" type="text"/>
+    <button id="update_button">Update location</button>
+  </div>
+  <div class="weather-table">
+    <select id="locations_delete"></select>
+    <button id="delete_button">Delete location</button>
+  </div>
   <br><br>
-  <select id="locations_update"></select>
-  <input id="text_input_update" type="text"/>
-  <button id="update_button">Update location</button>
-  <br><br>
-  <select id="locations_delete"></select>
-  <button id="delete_button">Delete location</button>
-  <br><br><br><br>
-  See the user details of the:<select id="users"></select>
-  <button id="user_button">Submit</button>
-  <pre id="user_json"></pre>
-  Username:<input id="user_input_post_username" type="text"/>
-  Password:<input id="user_input_post_password" type="text"/>
-  Admin?:<select id="user_input_post_admin"><option>true</option><option>false</option></select>
-  <button id="user_post_button">Add user</button>
-  <br><br>
-  <select id="users_update"></select>
-  Username:<input id="user_input_update_username" type="text"/>
-  Password:<input id="user_input_update_password" type="text"/>
-  Admin?:<select id="user_input_update_admin"><option>true</option><option>false</option></select>
-  <button id="user_update_button">Update user</button>
-  <br><br>
-  <select id="users_delete"></select>
-  <button id="user_delete_button">Delete user</button>
+  <div class="weather-table">
+    <label>See the user details of the:</label>
+    <select id="users"></select>
+    <button id="user_button">Submit</button>
+  </div>
+  <pre class="pree" id="user_json"></pre>
+  <div id="second-div" class="weather-table big">
+    <div>
+      <div style="margin-bottom:12px;">
+        <label class="labels">Username:</label>
+        <input id="user_input_post_username" type="text"/>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label class="labels">Password:</label>
+        <input id="user_input_post_password" type="text"/>
+      </div>
+        <label class="labels">Admin?</label>
+        <select id="user_input_post_admin"><option>true</option><option>false</option></select>
+        <button id="user_post_button">Add user</button>
+      </div>
+    </div>
+    <div class="weather-table big">
+      <div>
+        <div style="margin-bottom:12px;">
+          <select id="users_update"></select>
+        </div>
+        <div style="margin-bottom:12px;">
+          <label>Username:</label>
+          <input id="user_input_update_username" type="text"/>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label>Password:</label>
+        <input id="user_input_update_password" type="text"/>  
+      </div>
+      <div style="margin-bottom:12px;">
+        <label>Admin?:</label>
+        <select id="user_input_update_admin"><option>true</option><option>false</option></select>
+        <button id="user_update_button">Update user</button>
+      </div>
+      <div>
+        <select id="users_delete"></select>  
+        <button id="user_delete_button">Delete user</button>
+      </div>
+    </div>
+  </div>
   {% endif %}
   <br><br><br><br>
-  See the logs of the selected user id:<select id="users_log"></select>
-  <button id="user_log_post_button">Submit</button>
-  <button id="user_log_1_minute">Last 1 minute logs</button>
-  <button id="user_log_5_minutes">Last 5 minutes logs</button>
-  <br><br>
-  See the logs for this location of the selected user id:<select id="locations_users_log"></select>
-  <button id="locations_user_log_button">Submit</button>
-  <br><br>
-  See the logs that failed or succeeded of the selected user id:
-  <select id="success_user_log"><option>True</option><option>False</option></select>
-  <button id="locations_user_log_success_button">Submit</button>
-  <pre id="logs_json"></pre>
+  <div class="weather-table">
+    <label>See the logs of the selected user id:</label><select id="users_log"></select>
+    <button id="user_log_post_button">Submit</button>
+    <button id="user_log_1_minute">Last 1 minute logs</button>
+    <button id="user_log_5_minutes">Last 5 minutes logs</button>
+  </div>
+  <div class="weather-table">
+    <label>See the logs for this location of the selected user id:</label>
+    <select id="locations_users_log"></select>
+    <button id="locations_user_log_button">Submit</button>
+  </div>
+  <div class="weather-table">
+    <label>See the logs that failed or succeeded of the selected user id:</label>
+    <select id="success_user_log"><option>True</option><option>False</option></select>
+    <button id="locations_user_log_success_button">Submit</button>
+  </div>
+  <pre class="pree" id="logs_json"></pre>
 </body>
 <script
 src="https://code.jquery.com/jquery-3.6.0.min.js"
