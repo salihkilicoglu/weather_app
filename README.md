@@ -1,3 +1,3 @@
 # weather_app
 
-live version : https://salih55.pythonanywhere.com
+live version : http://salih55.pythonanywhere.com
