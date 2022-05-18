@@ -69,7 +69,7 @@ $(document).ready(function(){
   // add location
   $('#post_button').on('click', function(e){
     var value_inbox = $('#text_input').val()
-    e.preventDefault()
+    //e.preventDefault()
 
   $.ajax({
     type: 'POST',
@@ -79,10 +79,11 @@ $(document).ready(function(){
       'X-CSRFToken': csrftoken,
       "Accept": "application/json"},
     error: function(err) {
-      console.log(err); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
     },
     dataType: "json",
-    contentType: "application/json"
+    contentType: "application/json",
+    success: function () { location.reload() }
   });
   })
 
@@ -92,21 +93,21 @@ $(document).ready(function(){
     var value_inbox_update = $('#text_input_update').val()
     e.preventDefault()
 
-
-  $.ajax({
-    type: 'PUT',
-    url: `api/weather/locations/${value_selected_update}/update/`,
-    data: JSON.stringify({city: value_inbox_update}),
-    headers: {
-      'X-CSRFToken': csrftoken,
-      "Accept": "application/json"},
-    error: function(err) {
-      console.log(err); // console'a değil ekrana yazacak
-    },
-    dataType: "json",
-    contentType: "application/json"
-  });
-  })
+    $.ajax({
+      type: 'PUT',
+      url: `api/weather/locations/${value_selected_update}/update/`,
+      data: JSON.stringify({city: value_inbox_update}),
+      headers: {
+        'X-CSRFToken': csrftoken,
+        "Accept": "application/json"},
+      error: function(err) {
+        alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
+      },
+      dataType: "json",
+      contentType: "application/json",
+      success: function () { location.reload(),window.scrollTo('#first-divison') }
+    });
+    })
 
   // delete location
   $('#delete_button').on('click', function(e){
@@ -119,8 +120,9 @@ $(document).ready(function(){
     headers: {
       'X-CSRFToken': csrftoken,
     },
+    success: function () { location.reload() },
     error: function(err) {
-      console.log(err); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
     },
   });
   })
@@ -140,10 +142,11 @@ $(document).ready(function(){
       'X-CSRFToken': csrftoken,
       "Accept": "application/json"},
     error: function(err) {
-      console.log(err); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
     },
     dataType: "json",
-    contentType: "application/json"
+    contentType: "application/json",
+    success: function () { location.reload(),window.scrollTo($('#second-div').offset().top()) }
   });
   })
 
@@ -163,10 +166,11 @@ $(document).ready(function(){
       'X-CSRFToken': csrftoken,
       "Accept": "application/json"},
     error: function(err) {
-      console.log(err); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
     },
     dataType: "json",
-    contentType: "application/json"
+    contentType: "application/json",
+    success: function () { location.reload() }
   });
   })
 
@@ -181,11 +185,13 @@ $(document).ready(function(){
     headers: {
       'X-CSRFToken': csrftoken,
     },
+    success: function () { location.reload() },
     error: function(err) {
-      console.log(err); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
     },
   });
   })
+  
 
   // weather_button on click show weather
   $("#weather_button").on("click", function(){
@@ -193,7 +199,10 @@ $(document).ready(function(){
     window.selectedVal = $("#locations option:selected").val();
     $.getJSON(`https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q=${window.selectedVal}`, function(data) {
       var myjson = data;
-      document.getElementById("weather_json").textContent = JSON.stringify(data, undefined, 2);
+      var weatherJson = $('#weather_json')
+      weatherJson.css('display','none');
+      weatherJson.text(JSON.stringify(data, undefined, 2))
+      weatherJson.css('display','table');
       var query_success = true;
       var endTime = performance.now();
       var query_time = endTime - startTime;
@@ -206,7 +215,7 @@ $(document).ready(function(){
           'X-CSRFToken': csrftoken,
           "Accept": "application/json"},
         error: function(err) {
-          console.log(err); // console'a değil ekrana yazacak
+          alert(JSON.stringify(err.responseText))
         },
         dataType: "json",
         contentType: "application/json"
@@ -224,7 +233,7 @@ $(document).ready(function(){
           'X-CSRFToken': csrftoken,
           "Accept": "application/json"},
         error: function(err) {
-          console.log(err); // console'a değil ekrana yazacak
+          alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
         },
         dataType: "json",
         contentType: "application/json"
@@ -236,7 +245,10 @@ $(document).ready(function(){
   $("#user_button").on("click", function(){
     var selectedUser = $("#users option:selected").val();
     $.getJSON(`api/weather/users/${selectedUser}`, function(data) {
-      document.getElementById("user_json").textContent = JSON.stringify(data, undefined, 2);
+      var userJson = $('#user_json');
+      userJson.css('display','none');
+      userJson.text(JSON.stringify(data, undefined, 2));
+      userJson.css('display','table');
     })
   })
 
@@ -245,7 +257,10 @@ $(document).ready(function(){
     var selectedValLog = $("#users_log option:selected").val();
     $.getJSON(`api/weather/logs/?user_id=${selectedValLog}`, function(data) {
       if(data){
-      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+        var logJson = $('#logs_json');
+        logJson.css('display','none');
+        logJson.text(JSON.stringify(data, undefined, 2));
+        logJson.css('display','table');
       }
       else{
       return false
@@ -259,8 +274,10 @@ $(document).ready(function(){
     var selectedValLog2 = $("#users_log option:selected").val();
     $.getJSON(`api/weather/logs/?query_date=1&user_id=${selectedValLog2}`, function(data) {
       if(data){
-      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
-      }
+        var logJson = $('#logs_json');
+        logJson.css('display','none');
+        logJson.text(JSON.stringify(data, undefined, 2));
+        logJson.css('display','table');      }
       else{
       return false
       }
@@ -273,8 +290,10 @@ $(document).ready(function(){
     var selectedValLog3 = $("#users_log option:selected").val();
     $.getJSON(`api/weather/logs/?query_date=5&user_id=${selectedValLog3}`, function(data) {
       if(data){
-      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
-      }
+        var logJson = $('#logs_json');
+        logJson.css('display','none');
+        logJson.text(JSON.stringify(data, undefined, 2));
+        logJson.css('display','table');      }
       else{
       return false
       }
@@ -287,8 +306,10 @@ $(document).ready(function(){
     var selectedValLog4 = $("#users_log option:selected").val();
     $.getJSON(`api/weather/logs/?query_date=5&user_id=${selectedValLog4}`, function(data) {
       if(data){
-      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
-      }
+        var logJson = $('#logs_json');
+        logJson.css('display','none');
+        logJson.text(JSON.stringify(data, undefined, 2));
+        logJson.css('display','table');      }
       else{
       return false
       }
@@ -302,7 +323,10 @@ $(document).ready(function(){
     var selectedValLog6 = $("#users_log option:selected").val();
     $.getJSON(`api/weather/logs/?location_id=${selectedValLog5}&user_id=${selectedValLog6}`, function(data) {
       if(data){
-      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+        var logJson = $('#logs_json');
+        logJson.css('display','none');
+        logJson.text(JSON.stringify(data, undefined, 2));
+        logJson.css('display','table');
       }
       else{
       return false
@@ -317,7 +341,10 @@ $(document).ready(function(){
     var selectedValLog8 = $("#users_log option:selected").val();
     $.getJSON(`api/weather/logs/?query_success=${selectedValLog7}&user_id=${selectedValLog8}`, function(data) {
       if(data){
-      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+        var logJson = $('#logs_json');
+        logJson.css('display','none');
+        logJson.text(JSON.stringify(data, undefined, 2));
+        logJson.css('display','table');
       }
       else{
       return false
