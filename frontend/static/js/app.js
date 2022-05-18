@@ -180,7 +180,6 @@ $(document).ready(function(){
       document.getElementById("weather_json").textContent = JSON.stringify(data, undefined, 2);
       var query_success = true;
       var myjson = data;
-      console.log(window.selectedVal)
       var endTime = performance.now();
       var query_time = endTime - startTime;
       }

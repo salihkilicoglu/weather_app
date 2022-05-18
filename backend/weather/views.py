@@ -2,6 +2,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render
+from datetime import datetime, timedelta
 from rest_framework import generics
 from rest_framework.exceptions import APIException
 
@@ -21,6 +22,31 @@ class LogListAPIView(
     generics.ListAPIView):
     serializer_class = LogSerializer
     queryset = Log.objects.all()
+
+    def get_queryset(self):
+        """Retrieve the recipes for the authenticated user"""
+        user_id = self.request.query_params.get('user_id')
+        location_id = self.request.query_params.get('location_id')
+        query_success = self.request.query_params.get('query_success')
+        query_date = self.request.query_params.get('query_date')
+        queryset = Log.objects.all()
+        if user_id:
+            queryset = queryset.filter(user_id=user_id).order_by('-query_date')
+        if location_id:
+            queryset = queryset.filter(location_id=location_id)
+        if query_success:
+            queryset = queryset.filter(query_success=query_success)
+        if query_date:
+            if query_date == "1":
+                queryset = queryset.filter(
+                    query_date__gte=datetime.now()-timedelta(minutes=1)
+                )
+            elif query_date == "5":
+                queryset = queryset.filter(
+                    query_date__gte=datetime.now()-timedelta(minutes=5)
+                )
+
+        return queryset
 
 log_list_view = LogListAPIView.as_view()
 
