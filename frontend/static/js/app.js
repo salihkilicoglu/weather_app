@@ -54,6 +54,14 @@ $(document).on('load', $.getJSON( "api/weather/users/", function(data) {
   }
   }))
 
+$(document).on('load', $.getJSON( "api/weather/locations/", function(data) {
+  if(data){
+    $('#locations_users_log').append(data.map(selectbox => `<option>${selectbox.city}</option>`))
+  } else{
+    $('document').body.append('selectoptions');
+  }
+  }))
+
 
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 $(document).ready(function(){
@@ -232,18 +240,90 @@ $(document).ready(function(){
     })
   })
 
-    // weather_button on click show weather
-    $("#user_log_post_button").on("click", function(){
-      window.selectedValLog = $("#users_log option:selected").val();
-      $.getJSON(`api/weather/logs/?user_id=${window.selectedValLog}`, function(data) {
-        if(data){
-        document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
-        }
-        else{
-        return false
-        }
+  // user_log_post_button on click show logs
+  $("#user_log_post_button").on("click", function(){
+    window.selectedValLog = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?user_id=${window.selectedValLog}`, function(data) {
+      if(data){
+      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+      }
+      else{
+      return false
+      }
 
-      })
     })
+  })
+
+  // user_log_1_minute on click show logs
+  $("#user_log_1_minute").on("click", function(){
+    var selectedValLog2 = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?query_date=1&user_id=${selectedValLog2}`, function(data) {
+      if(data){
+      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+      }
+      else{
+      return false
+      }
+
+    })
+  })
+
+  // user_log_5_minutes on click show logs
+  $("#user_log_5_minutes").on("click", function(){
+    var selectedValLog3 = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?query_date=5&user_id=${selectedValLog3}`, function(data) {
+      if(data){
+      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+      }
+      else{
+      return false
+      }
+
+    })
+  })
+
+  // user_log_5_minutes on click show logs
+  $("#user_log_5_minutes").on("click", function(){
+    var selectedValLog3 = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?query_date=5&user_id=${selectedValLog3}`, function(data) {
+      if(data){
+      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+      }
+      else{
+      return false
+      }
+
+    })
+  })
+
+  // locations_user_log_button on click show logs
+  $("#locations_user_log_button").on("click", function(){
+    var selectedValLog4 = $("#locations_users_log option:selected").val();
+    var selectedValLog5 = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?location_id=${selectedValLog4}&user_id=${selectedValLog5}`, function(data) {
+      if(data){
+      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+      }
+      else{
+      return false
+      }
+
+    })
+  })
+
+  // locations_user_log_button on click show logs +++
+  $("#locations_user_log_success_button").on("click", function(){
+    var selectedValLog6 = $("#success_user_log option:selected").val();
+    var selectedValLog7 = $("#users_log option:selected").val();
+    $.getJSON(`api/weather/logs/?query_success=${selectedValLog6}&user_id=${selectedValLog7}`, function(data) {
+      if(data){
+      document.getElementById("logs_json").textContent = JSON.stringify(data, undefined, 2);
+      }
+      else{
+      return false
+      }
+
+    })
+  })
 
 })
