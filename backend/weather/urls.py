@@ -16,4 +16,5 @@ urlpatterns = [
     path('users/<str:username>/', views.user_detail_view),
     path('logs/', views.log_list_view),
     path('logs/create/', views.log_create_view),
+    path('api/', views.weather_api_view),
 ]
