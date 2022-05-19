@@ -1,20 +1,34 @@
+import requests
+from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from datetime import datetime, timedelta
 from rest_framework import generics
+from rest_framework.views import APIView
 from rest_framework.exceptions import APIException
 
 from api.mixins import IsAdminUserMixin
 from .models import Locations, Log
 from .serializers import LocationsSerializer, LogSerializer, UserSerializer
 
+
 class HomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         return render(request, 'home.html')
 
 home_view = HomeView.as_view()
+
+
+class WeatherAPIView(LoginRequiredMixin, APIView):
+    def get(self, request, *args, **kwargs):
+        location = request.GET.get('q')
+        url = f"https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q={location}"
+        res = requests.get(url)
+        return JsonResponse(res.json())
+
+weather_api_view = WeatherAPIView.as_view()
 
 
 class LogListAPIView(
@@ -24,7 +38,6 @@ class LogListAPIView(
     queryset = Log.objects.all()
 
     def get_queryset(self):
-        """Retrieve the recipes for the authenticated user"""
         user_id = self.request.query_params.get('user_id')
         location_id = self.request.query_params.get('location_id')
         query_success = self.request.query_params.get('query_success')
