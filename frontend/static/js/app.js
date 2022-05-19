@@ -69,7 +69,6 @@ $(document).ready(function(){
   // add location
   $('#post_button').on('click', function(e){
     var value_inbox = $('#text_input').val()
-    //e.preventDefault()
 
   $.ajax({
     type: 'POST',
@@ -79,7 +78,7 @@ $(document).ready(function(){
       'X-CSRFToken': csrftoken,
       "Accept": "application/json"},
     error: function(err) {
-      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText));
     },
     dataType: "json",
     contentType: "application/json",
@@ -101,7 +100,7 @@ $(document).ready(function(){
         'X-CSRFToken': csrftoken,
         "Accept": "application/json"},
       error: function(err) {
-        alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
+        alert(JSON.stringify(err.responseText));
       },
       dataType: "json",
       contentType: "application/json",
@@ -122,7 +121,7 @@ $(document).ready(function(){
     },
     success: function () { location.reload() },
     error: function(err) {
-      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText));
     },
   });
   })
@@ -142,7 +141,7 @@ $(document).ready(function(){
       'X-CSRFToken': csrftoken,
       "Accept": "application/json"},
     error: function(err) {
-      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText));
     },
     dataType: "json",
     contentType: "application/json",
@@ -166,7 +165,7 @@ $(document).ready(function(){
       'X-CSRFToken': csrftoken,
       "Accept": "application/json"},
     error: function(err) {
-      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText));
     },
     dataType: "json",
     contentType: "application/json",
@@ -187,7 +186,7 @@ $(document).ready(function(){
     },
     success: function () { location.reload() },
     error: function(err) {
-      alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
+      alert(JSON.stringify(err.responseText));
     },
   });
   })
@@ -196,13 +195,46 @@ $(document).ready(function(){
   // weather_button on click show weather
   $("#weather_button").on("click", function(){
     var startTime = performance.now();
+    var deneme = $('#deneme');
+    deneme.css('display','block')
     window.selectedVal = $("#locations option:selected").val();
-    $.getJSON(`https://api.openweathermap.org/data/2.5/weather?appid=02a69e2a05969cc2aa72d672bfe47a3d&units=metric&lang=tr&q=${window.selectedVal}`, function(data) {
+    $.getJSON(`api/weather/api/?q=${window.selectedVal}`, function(data) {
       var myjson = data;
-      var weatherJson = $('#weather_json')
-      weatherJson.css('display','none');
-      weatherJson.text(JSON.stringify(data, undefined, 2))
-      weatherJson.css('display','table');
+      if(data.cod == 404){
+        deneme.html(`
+        <p class="weather-info-text" style="text-transform:capitalize;font-weight:bold;color:#FF0000;">${data.message}</p>
+        `)
+        var query_success = false;
+        var query_time = 0;
+        $.ajax({
+          type: 'POST',
+          url: "api/weather/logs/create/",
+          data: JSON.stringify({location_id: window.selectedVal, query_result: myjson, query_time: query_time, query_success: query_success}),
+          headers: {
+            'X-CSRFToken': csrftoken,
+            "Accept": "application/json"},
+          error: function(err) {
+            alert(JSON.stringify(err.responseText));
+          },
+          dataType: "json",
+          contentType: "application/json"
+        })
+        return false;
+      }
+      else{
+
+        deneme.html(`
+        <img src="http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" width="100" />
+        <p class="weather-info-text"><span>Sıcaklık:</span> ${data.main.temp}℃</p>
+        <p class="weather-info-text"><span>Hissedilen Sıcaklık:</span> ${data.main.feels_like}℃</p>
+        <p class="weather-info-text"><span>Maksimum Sıcaklık:</span> ${data.main.temp_max}℃</p>
+        <p class="weather-info-text"><span>Minimum Sıcaklık:</span> ${data.main.temp_min}℃</p>
+        <p class="weather-info-text"><span>Basınç:</span> ${data.main.pressure}</p>
+        <p class="weather-info-text"><span>Nem Oranı:</span> %${data.main.humidity}</p>
+        <p class="weather-info-text"><span>Rüzgar Hızı:</span> ${data.wind.speed}</p>
+        <p class="weather-info-text"><span>Rüzgar Derecesi:</span> ${data.wind.deg}</p>
+        `) ;
+
       var query_success = true;
       var endTime = performance.now();
       var query_time = endTime - startTime;
@@ -220,24 +252,7 @@ $(document).ready(function(){
         dataType: "json",
         contentType: "application/json"
       })
-    })
-    .fail(function() {
-      var query_success = false;
-      var query_time = 0;
-      var myjson = null;
-      $.ajax({
-        type: 'POST',
-        url: "api/weather/logs/create/",
-        data: JSON.stringify({location_id: window.selectedVal, query_result: myjson, query_time: query_time, query_success: query_success}),
-        headers: {
-          'X-CSRFToken': csrftoken,
-          "Accept": "application/json"},
-        error: function(err) {
-          alert(JSON.stringify(err.responseText)); // console'a değil ekrana yazacak
-        },
-        dataType: "json",
-        contentType: "application/json"
-      })
+    }
     })
   })
 
