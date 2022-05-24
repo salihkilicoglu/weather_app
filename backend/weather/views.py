@@ -44,7 +44,7 @@ class LogListAPIView(
         query_date = self.request.query_params.get('query_date')
         queryset = Log.objects.all()
         if user_id:
-            queryset = queryset.filter(user_id=user_id).order_by('-query_date')
+            queryset = queryset.filter(user_id=user_id).order_by('-query_date')[:20]
         if location_id:
             queryset = queryset.filter(location_id=location_id)
         if query_success:
@@ -128,8 +128,8 @@ class UserUpdateAPIView(
 
     def perform_update(self, serializer):
         username = self.get_object().username
-        if username == 'root':
-            raise APIException('You can not update/delete root user')
+        if username == 'root' or username == 'user':
+            raise APIException(f'You can not update/delete {username} user')
         serializer.save()
 
 user_update_view = UserUpdateAPIView.as_view()
@@ -145,8 +145,8 @@ class UserDestroyAPIView(
 
     def perform_destroy(self, instance):
         username = instance.username
-        if username == 'root':
-            raise APIException('You can not update/delete root user')
+        if username == 'root' or username == 'user':
+            raise APIException(f'You can not update/delete {username} user')
         super().perform_destroy(instance)
 
 user_destroy_view = UserDestroyAPIView.as_view()
