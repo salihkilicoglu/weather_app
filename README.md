@@ -49,7 +49,7 @@ Bu proje bana verilen bir teknik task'ın yapılmış halidir, teknik task şu �
   sorgulama yapan kullanici ip adresi - sorgulama sonucu -
   sorgulama sonuc getirme suresi (mili saniye cinsinden) - sorgulama durumu (BASARILI / BASARISIZ)
 
-  9- Menu-4'de combobox'dan secilen kullanici icin yapilmis sorgulama islemleri order by sorgulama zaman DESC
-  seklinde son yapilan sorgulama en ustte gosterilecek sekilde listelenecektir.
-  Rapor ekraninda sorgulama zaman araligi, sorgulama yapilan lokasyon ve sorgulama durumu kriterlerine gore de
-  filtreleme yapilabilecektir.```
+  9- Menu-4'de combobox'dan secilen kullanici icin yapilmis sorgulama islemleri order by sorgulama zaman
+  DESC seklinde son yapilan sorgulama en ustte gosterilecek sekilde listelenecektir.
+  Rapor ekraninda sorgulama zaman araligi, sorgulama yapilan lokasyon ve sorgulama durumu kriterlerine
+  gore de filtreleme yapilabilecektir.```
