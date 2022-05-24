@@ -44,7 +44,7 @@ class LogListAPIView(
         query_date = self.request.query_params.get('query_date')
         queryset = Log.objects.all()
         if user_id:
-            queryset = queryset.filter(user_id=user_id).order_by('-query_date')[:20]
+            queryset = queryset.filter(user_id=user_id).order_by('-query_date')
         if location_id:
             queryset = queryset.filter(location_id=location_id)
         if query_success:
