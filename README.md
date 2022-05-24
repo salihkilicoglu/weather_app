@@ -9,11 +9,11 @@ Bu proje bana verilen bir teknik task'ın yapılmış halidir, teknik task şu �
   - Angular 6 (Frontend) / Vue.js / Nuxt Js / React Js / jQuery + DHTML
 
   Problem : Online Hava Durumu Sorgulama (OHDS) projesi
-  0- Hava durumu bilgisi https://www.wunderground.com/weather/api/d/docs uzerindeki API'nin ucretsiz surumu kullanilarak
-  JSON verinin cekilerek parse edilmesi sonucu elde edilecektir.
+  0- Hava durumu bilgisi https://www.wunderground.com/weather/api/d/docs uzerindeki API'nin ucretsiz surumu
+  kullanilarak JSON verinin cekilerek parse edilmesi sonucu elde edilecektir.
 
-  1- MySQL/Postgresql  veritabani (VT) yonetim sistemi kullanarak calisacak dinamik bir hava durumu uygulamasi
-  gelistirmesi beklenmektedir.
+  1- MySQL/Postgresql  veritabani (VT) yonetim sistemi kullanarak calisacak dinamik bir hava durumu
+  uygulamasi gelistirmesi beklenmektedir.
 
   2- Uygulamaya kullanici adi - sifre bilgileri belirtilerek giris yapilacaktir.
 
@@ -29,9 +29,10 @@ Bu proje bana verilen bir teknik task'ın yapılmış halidir, teknik task şu �
   5- Menu-1 ve Menu-3 sadece admin yetkisine sahip kullanicilara gorunur olacaktir.
 
   6- Menu-1 icinde ekleme, silme, guncelleme ve listeleme yetenekleri olan bir ekran yapisi yer alacaktir.
-  Bu ekran uzerinden yeni lokasyonlar https://www.wunderground.com/weather/api/d/docs API'sinde kullanilmak uzere metin
-  olarak eklenip VT uzerinde tutulabilecektir. Ornegin; Istanbul, San Fransisco gibi kullanici ne yazarsa kabul edilecektir.
-  (https://www.wunderground.com/weather/api/d/docs API'sinin bekledigi isimler manuel admin tarafindan ekrandan duzeltilecektir.
+  Bu ekran uzerinden yeni lokasyonlar https://www.wunderground.com/weather/api/d/docs API'sinde kullanilmak
+  uzere metin olarak eklenip VT uzerinde tutulabilecektir. Ornegin; Istanbul, San Fransisco gibi kullanici
+  ne yazarsa kabul edilecektir. (https://www.wunderground.com/weather/api/d/docs API'sinin bekledigi isimler
+  manuel admin tarafindan ekrandan duzeltilecektir.
   Uygun olmayan isim kontrolu gibi extra bir kontrole gerek yoktur.)
 
   7- Menu-3 icinde kullanici ekleme, guncelleme, silme ve listeleme yetenekleri yer alacaktir.
@@ -39,13 +40,16 @@ Bu proje bana verilen bir teknik task'ın yapılmış halidir, teknik task şu �
   VT'de kullanici tablosu ilk yaratildiginda elle bu kullanici girilerek ekrandan mudahale yapilmasi
   sadece username = root olan kullanici icin engellenecektir.
 
-  8- Menu-2'de ise kullanici menu-1'de girmis oldugu lokasyonlardan birini combobox'dan secerek "Hava Durumu Sorgula" butonuna
-  tikladiginda https://www.wunderground.com/weather/api/d/docs API'si uzerinden sorgulama yapilarak sonuc ekranda gosterilecektir.
+  8- Menu-2'de ise kullanici menu-1'de girmis oldugu lokasyonlardan birini combobox'dan secerek
+  "Hava Durumu Sorgula" butonuna tikladiginda https://www.wunderground.com/weather/api/d/docs
+  API'si uzerinden sorgulama yapilarak sonuc ekranda gosterilecektir.
   Yapilan her sorgulama islemi VT uzerinde sorgulama tarihcesi seklinde asagidaki formatta loglanacaktir :
 
-  * sorgulayan kullanici id - sorgulama zamani - sorgulama yapilan lokasyon id - sorgulama yapan kullanici ip adresi -
-  sorgulama sonucu - sorgulama sonuc getirme suresi (mili saniye cinsinden) - sorgulama durumu (BASARILI / BASARISIZ)
+  * sorgulayan kullanici id - sorgulama zamani - sorgulama yapilan lokasyon id -
+  sorgulama yapan kullanici ip adresi - sorgulama sonucu -
+  sorgulama sonuc getirme suresi (mili saniye cinsinden) - sorgulama durumu (BASARILI / BASARISIZ)
 
-  9- Menu-4'de combobox'dan secilen kullanici icin yapilmis sorgulama islemleri order by sorgulama zaman DESC seklinde son yapilan
-  sorgulama en ustte gosterilecek sekilde listelenecektir. Rapor ekraninda sorgulama zaman araligi, sorgulama yapilan lokasyon ve
-  sorgulama durumu kriterlerine gore de filtreleme yapilabilecektir.```
+  9- Menu-4'de combobox'dan secilen kullanici icin yapilmis sorgulama islemleri order by sorgulama zaman DESC
+  seklinde son yapilan sorgulama en ustte gosterilecek sekilde listelenecektir.
+  Rapor ekraninda sorgulama zaman araligi, sorgulama yapilan lokasyon ve sorgulama durumu kriterlerine gore de
+  filtreleme yapilabilecektir.```
